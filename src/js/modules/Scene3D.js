@@ -154,15 +154,12 @@ export default class Scene3D {
   }
 
   animate(time) {
-    // console.log(
-    //   Math.sin(time / 3000) * 1000 + ', 20, ' + Math.cos(time / 3000) * 1000
-    // )
-    // this.camera.position.set(
-    //   Math.sin(time / 3000) * 1000,
-    //   20,
-    //   Math.cos(time / 3000) * 1000
-    // )
-    // this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+    this.camera.position.set(
+      Math.sin(time / 3000) * 1000,
+      20,
+      Math.cos(time / 3000) * 1000
+    )
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
     // update tween sequence
     TWEEN.update()
