@@ -1,6 +1,9 @@
 import * as THREE from 'three'
-import * as TWEEN from '@tweenjs/tween.js'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+
+import * as TWEEN from '@tweenjs/tween.js'
+
+import random from 'canvas-sketch-util/random'
 
 const N = 64
 
@@ -44,15 +47,21 @@ export default class Scene3D {
     this.camera.position.set(100, 100, 100)
     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-    // setting up directional light
-    this.directionalLight = new THREE.DirectionalLight(0x9090aa)
-    this.directionalLight.position.set(-300, -300, -500).normalize()
-    this.scene.add(this.directionalLight)
+    // setting up ambient light
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 2)
+    this.ambientLight.position.set(-300, -300, -500).normalize()
+    this.scene.add(this.ambientLight)
 
     // setting up hemisphere light
-    this.hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444)
-    this.hemisphereLight.position.set(1, 1, 1)
-    this.scene.add(this.hemisphereLight)
+    // this.hemisphereLight = new THREE.HemisphereLight('blue', 'red', 5)
+    // this.hemisphereLight.position.set(0, 0, 0)
+    // this.scene.add(this.hemisphereLight)
+
+    // const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+    //   this.hemisphereLight,
+    //   5
+    // )
+    // this.scene.add(hemisphereLightHelper)
 
     // meshes
     this.geometry = new THREE.BoxGeometry(20, 20, 20)
@@ -89,15 +98,15 @@ export default class Scene3D {
 
   animateTween() {
     // random time necessary for the animation
-    const time = Math.random() * 2000 + 250
+    const time = this.#normalizedGaussian() * 2000 + 250
 
     // random parameters for movement
-    const sx = Math.random() * 3
-    const sy = Math.random() * 3
-    const sz = Math.random() * 2
-    const yaw = Math.random() * 1000
-    const pitch = Math.random() * 1200
-    const dist = Math.random() * 500 + 250
+    const sx = this.#normalizedGaussian() * 3
+    const sy = this.#normalizedGaussian() * 3
+    const sz = this.#normalizedGaussian() * 2
+    const yaw = this.#normalizedGaussian() * 1000
+    const pitch = this.#normalizedGaussian() * 1200
+    const dist = this.#normalizedGaussian() * 500 + 250
 
     const lookAtZero = Math.random() > 0.5 ? true : false
 
@@ -148,18 +157,23 @@ export default class Scene3D {
     // console.log(
     //   Math.sin(time / 3000) * 1000 + ', 20, ' + Math.cos(time / 3000) * 1000
     // )
-    this.camera.position.set(
-      Math.sin(time / 3000) * 1000,
-      20,
-      Math.cos(time / 3000) * 1000
-    )
-    this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+    // this.camera.position.set(
+    //   Math.sin(time / 3000) * 1000,
+    //   20,
+    //   Math.cos(time / 3000) * 1000
+    // )
+    // this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
     // update tween sequence
     TWEEN.update()
 
     this.renderer.render(this.scene, this.camera)
     requestAnimationFrame((time) => this.animate(time))
+  }
+
+  #normalizedGaussian(mean = 0.5, std = 1) {
+    const value = random.gaussian(mean, std)
+    return Math.abs((value - mean) / (2 * std)).toFixed(2)
   }
 
   static init() {

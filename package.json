@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^23.1.1",
+    "canvas-sketch-util": "^1.10.0",
+    "random": "^4.1.0",
     "three": "^0.162.0"
   }
 }
