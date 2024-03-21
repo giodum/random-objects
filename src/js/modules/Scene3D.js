@@ -65,7 +65,9 @@ export default class Scene3D {
 
     // meshes
     this.geometry = new THREE.BoxGeometry(20, 20, 20)
-    this.material = new THREE.MeshStandardMaterial({color: 0x555555})
+    // this.geometry = new THREE.TorusGeometry(18, 2, 100, 16)
+    // this.material = new THREE.MeshStandardMaterial({color: 0x555555})
+    this.material = new THREE.MeshNormalMaterial()
     this.meshes = []
 
     for (let i = 0; i < N; i++) {
@@ -75,8 +77,8 @@ export default class Scene3D {
     }
 
     // temp orbit control
-    this.orbit = new OrbitControls(this.camera, this.renderer.domElement)
-    this.orbit.update()
+    // this.orbit = new OrbitControls(this.camera, this.renderer.domElement)
+    // this.orbit.update()
 
     // set event listeners
     this.eventListeners()
@@ -150,14 +152,14 @@ export default class Scene3D {
     // before programming a new one
     setTimeout(() => {
       this.animateTween()
-    }, time)
+    }, time + 400)
   }
 
   animate(time) {
     this.camera.position.set(
-      Math.sin(time / 3000) * 1000,
+      Math.sin(time / 3000) * 600,
       20,
-      Math.cos(time / 3000) * 1000
+      Math.cos(time / 3000) * 600
     )
     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
